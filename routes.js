@@ -27,11 +27,11 @@ router.get('/screenshots', async (req, res) => {
         });
 
         // Sauvegarder l'image dans le système de fichiers
-        const screenshotsDirectory = path.join(__dirname, 'screenshots');
-        const filename = `screenshot_${Date.now()}.png`;
-        const filePath = path.join(screenshotsDirectory, filename);
-        await fs.writeFile(filePath, response.data);
-
+        /*  const screenshotsDirectory = path.join(__dirname, 'screenshots');
+          const filename = `screenshot_${Date.now()}.png`;
+          const filePath = path.join(screenshotsDirectory, filename);
+          await fs.writeFile(filePath, response.data);
+  */
         // Envoyer la réponse
         res.set('Content-Type', 'image/png');
         res.send(response.data);
