@@ -1,2 +1,2 @@
-/* /.netlify/functions/app
-/screenshots/* /screenshots/:splat 200
+/screenshots/* /.netlify/functions/screenshots/:splat 200
+/* /.netlify/functions/app 200
