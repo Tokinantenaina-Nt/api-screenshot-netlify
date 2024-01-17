@@ -1,22 +1,20 @@
 const express = require('express');
 const axios = require('axios');
-const fs = require('fs').promises; // Utilisation de fs.promises pour les opérations asynchrones
+const fs = require('fs').promises;
 const path = require('path');
 
 const router = express.Router();
-const commitAndPush = require('./git.push');
 
 router.get('/', (req, res) => {
     res.send('#### WELCOME ###');
-    commitAndPush();
 });
 
 router.get('/screenshot', async (req, res) => {
     try {
         const accessKey = '4f286cb96a13e465f2419e607d5d8d76';
-        const urlToCapture = 'https://www.flashscore.mobi/?s=2';
-
+        const urlToCapture = 'https://www.google.com';
         const screenshotAPI = 'https://api.screenshotlayer.com/api/capture';
+
         const response = await axios.get(screenshotAPI, {
             params: {
                 access_key: accessKey,
@@ -29,10 +27,12 @@ router.get('/screenshot', async (req, res) => {
         });
 
         // Sauvegarder l'image dans le système de fichiers
-        const filePath = path.join(__dirname, 'captures', 'screenshot.png');
+        const screenshotsDirectory = path.join(__dirname, 'captures');
+        const filename = `screenshot_${Date.now()}.png`;
+        const filePath = path.join(screenshotsDirectory, filename);
         await fs.writeFile(filePath, response.data);
 
-        // Renvoyer une réponse
+        // Envoyer la réponse
         res.set('Content-Type', 'image/png');
         res.send(response.data);
     } catch (error) {
