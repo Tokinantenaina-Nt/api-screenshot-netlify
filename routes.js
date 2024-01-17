@@ -1,15 +1,22 @@
 const express = require('express');
 const axios = require('axios');
+const fs = require('fs').promises; // Utilisation de fs.promises pour les opérations asynchrones
+const path = require('path');
+
 const router = express.Router();
+const commitAndPush = require('./git.push');
+
 router.get('/', (req, res) => {
-    res.send('#### WELCOME ###')
-})
+    res.send('#### WELCOME ###');
+    commitAndPush();
+});
+
 router.get('/screenshot', async (req, res) => {
     try {
         const accessKey = '4f286cb96a13e465f2419e607d5d8d76';
-        const urlToCapture = 'https://www.google.com'; // Remplacez ceci par l'URL que vous souhaitez capturer
-        const screenshotAPI = 'https://api.screenshotlayer.com/api/capture';
+        const urlToCapture = 'https://www.flashscore.mobi/?s=2';
 
+        const screenshotAPI = 'https://api.screenshotlayer.com/api/capture';
         const response = await axios.get(screenshotAPI, {
             params: {
                 access_key: accessKey,
@@ -18,16 +25,20 @@ router.get('/screenshot', async (req, res) => {
                 width: '1024',
                 format: 'PNG',
             },
-            responseType: 'arraybuffer', // Spécifier le type de réponse pour gérer les images
+            responseType: 'arraybuffer',
         });
 
-        // Renvoyer l'image capturée
+        // Sauvegarder l'image dans le système de fichiers
+        const filePath = path.join(__dirname, 'captures', 'screenshot.png');
+        await fs.writeFile(filePath, response.data);
+
+        // Renvoyer une réponse
         res.set('Content-Type', 'image/png');
         res.send(response.data);
     } catch (error) {
-        // En cas d'erreur, renvoyer un code d'erreur
         console.error(error.message);
         res.status(500).send('Erreur lors de la capture de l\'écran');
     }
 });
-module.exports = router
+
+module.exports = router;
