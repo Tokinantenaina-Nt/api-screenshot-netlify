@@ -1,6 +1,9 @@
 const express = require('express');
 const axios = require('axios');
 const router = express.Router();
+router.get('/', (req, res) => {
+    res.send('#### WELCOME ###')
+})
 router.get('/screenshot', async (req, res) => {
     try {
         const accessKey = '4f286cb96a13e465f2419e607d5d8d76';
