@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
 router.get('/screenshot', async (req, res) => {
     try {
         const accessKey = '4f286cb96a13e465f2419e607d5d8d76';
-        const urlToCapture = 'https://www.google.com';
+        const urlToCapture = 'https://www.flashscore.mobi/?s=2';
         const screenshotAPI = 'https://api.screenshotlayer.com/api/capture';
 
         const response = await axios.get(screenshotAPI, {
@@ -27,7 +27,7 @@ router.get('/screenshot', async (req, res) => {
         });
 
         // Sauvegarder l'image dans le système de fichiers
-        const screenshotsDirectory = path.join(__dirname, 'captures');
+        const screenshotsDirectory = path.join(__dirname, 'screenshots');
         const filename = `screenshot_${Date.now()}.png`;
         const filePath = path.join(screenshotsDirectory, filename);
         await fs.writeFile(filePath, response.data);
